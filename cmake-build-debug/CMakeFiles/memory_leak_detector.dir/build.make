@@ -70,17 +70,47 @@ CMakeFiles/memory_leak_detector.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/memory_leak_detector.dir/main.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mersed/CLionProjects/memory-leak-detector/main.c -o CMakeFiles/memory_leak_detector.dir/main.c.s
 
+CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o: CMakeFiles/memory_leak_detector.dir/flags.make
+CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o: ../tests/structure_offset/structure_offset.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mersed/CLionProjects/memory-leak-detector/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o   -c /home/mersed/CLionProjects/memory-leak-detector/tests/structure_offset/structure_offset.c
+
+CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mersed/CLionProjects/memory-leak-detector/tests/structure_offset/structure_offset.c > CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.i
+
+CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mersed/CLionProjects/memory-leak-detector/tests/structure_offset/structure_offset.c -o CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.s
+
+CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o: CMakeFiles/memory_leak_detector.dir/flags.make
+CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o: ../tests/array_of_structures/array_of_structures.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mersed/CLionProjects/memory-leak-detector/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o   -c /home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.c
+
+CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.c > CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.i
+
+CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.c -o CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.s
+
 # Object files for target memory_leak_detector
 memory_leak_detector_OBJECTS = \
-"CMakeFiles/memory_leak_detector.dir/main.c.o"
+"CMakeFiles/memory_leak_detector.dir/main.c.o" \
+"CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o" \
+"CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o"
 
 # External object files for target memory_leak_detector
 memory_leak_detector_EXTERNAL_OBJECTS =
 
 memory_leak_detector: CMakeFiles/memory_leak_detector.dir/main.c.o
+memory_leak_detector: CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o
+memory_leak_detector: CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o
 memory_leak_detector: CMakeFiles/memory_leak_detector.dir/build.make
 memory_leak_detector: CMakeFiles/memory_leak_detector.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mersed/CLionProjects/memory-leak-detector/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable memory_leak_detector"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mersed/CLionProjects/memory-leak-detector/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable memory_leak_detector"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/memory_leak_detector.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -150,6 +150,60 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/main.c.s
 .PHONY : main.c.s
 
+tests/array_of_structures/array_of_structures.o: tests/array_of_structures/array_of_structures.c.o
+
+.PHONY : tests/array_of_structures/array_of_structures.o
+
+# target to build an object file
+tests/array_of_structures/array_of_structures.c.o:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o
+.PHONY : tests/array_of_structures/array_of_structures.c.o
+
+tests/array_of_structures/array_of_structures.i: tests/array_of_structures/array_of_structures.c.i
+
+.PHONY : tests/array_of_structures/array_of_structures.i
+
+# target to preprocess a source file
+tests/array_of_structures/array_of_structures.c.i:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.i
+.PHONY : tests/array_of_structures/array_of_structures.c.i
+
+tests/array_of_structures/array_of_structures.s: tests/array_of_structures/array_of_structures.c.s
+
+.PHONY : tests/array_of_structures/array_of_structures.s
+
+# target to generate assembly for a file
+tests/array_of_structures/array_of_structures.c.s:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.s
+.PHONY : tests/array_of_structures/array_of_structures.c.s
+
+tests/structure_offset/structure_offset.o: tests/structure_offset/structure_offset.c.o
+
+.PHONY : tests/structure_offset/structure_offset.o
+
+# target to build an object file
+tests/structure_offset/structure_offset.c.o:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.o
+.PHONY : tests/structure_offset/structure_offset.c.o
+
+tests/structure_offset/structure_offset.i: tests/structure_offset/structure_offset.c.i
+
+.PHONY : tests/structure_offset/structure_offset.i
+
+# target to preprocess a source file
+tests/structure_offset/structure_offset.c.i:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.i
+.PHONY : tests/structure_offset/structure_offset.c.i
+
+tests/structure_offset/structure_offset.s: tests/structure_offset/structure_offset.c.s
+
+.PHONY : tests/structure_offset/structure_offset.s
+
+# target to generate assembly for a file
+tests/structure_offset/structure_offset.c.s:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/tests/structure_offset/structure_offset.c.s
+.PHONY : tests/structure_offset/structure_offset.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,6 +216,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... tests/array_of_structures/array_of_structures.o"
+	@echo "... tests/array_of_structures/array_of_structures.i"
+	@echo "... tests/array_of_structures/array_of_structures.s"
+	@echo "... tests/structure_offset/structure_offset.o"
+	@echo "... tests/structure_offset/structure_offset.i"
+	@echo "... tests/structure_offset/structure_offset.s"
 .PHONY : help
 
 

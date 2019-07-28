@@ -1,19 +1,18 @@
+#ifndef STRUCTURE_OFFSET
+#define STRUCTURE_OFFSET
+
 #include <stdio.h>
 #include <string.h>
 #include <stddef.h>
 
-#include "mld.h"
-
-typedef struct employe {
+typedef struct emp_ {
     char emp_name[30];
     unsigned int emp_id;
     unsigned int age;
-    struct employe *mgr;
+    struct emp_ *mgr;
     float salary;
-} employe_t;
+} emp_t;
 
+void test_structure_offset();
 
-int main() {
-    printf("TESTIRANJE");
-    return 0;
-}
+#endif

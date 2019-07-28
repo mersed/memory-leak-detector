@@ -81,6 +81,21 @@
 		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/main.c">
 			<Option target="memory_leak_detector"/>
 		</Unit>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/mld.h">
+			<Option target="memory_leak_detector"/>
+		</Unit>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.c">
+			<Option target="memory_leak_detector"/>
+		</Unit>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.h">
+			<Option target="memory_leak_detector"/>
+		</Unit>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/tests/structure_offset/structure_offset.c">
+			<Option target="memory_leak_detector"/>
+		</Unit>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/tests/structure_offset/structure_offset.h">
+			<Option target="memory_leak_detector"/>
+		</Unit>
 		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

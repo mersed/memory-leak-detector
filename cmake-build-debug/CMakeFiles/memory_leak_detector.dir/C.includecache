@@ -6,11 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/mersed/CLionProjects/memory-leak-detector/main.c
-stdio.h
--
-string.h
--
-stddef.h
--
+/home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.c
+array_of_structures.h
+/home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.h
+
+/home/mersed/CLionProjects/memory-leak-detector/tests/array_of_structures/array_of_structures.h
 
