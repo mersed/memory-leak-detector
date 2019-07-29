@@ -81,6 +81,9 @@
 		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/main.c">
 			<Option target="memory_leak_detector"/>
 		</Unit>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/mld.c">
+			<Option target="memory_leak_detector"/>
+		</Unit>
 		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/mld.h">
 			<Option target="memory_leak_detector"/>
 		</Unit>

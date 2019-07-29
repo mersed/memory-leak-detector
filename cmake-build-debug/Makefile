@@ -150,6 +150,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/main.c.s
 .PHONY : main.c.s
 
+mld.o: mld.c.o
+
+.PHONY : mld.o
+
+# target to build an object file
+mld.c.o:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/mld.c.o
+.PHONY : mld.c.o
+
+mld.i: mld.c.i
+
+.PHONY : mld.i
+
+# target to preprocess a source file
+mld.c.i:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/mld.c.i
+.PHONY : mld.c.i
+
+mld.s: mld.c.s
+
+.PHONY : mld.s
+
+# target to generate assembly for a file
+mld.c.s:
+	$(MAKE) -f CMakeFiles/memory_leak_detector.dir/build.make CMakeFiles/memory_leak_detector.dir/mld.c.s
+.PHONY : mld.c.s
+
 tests/array_of_structures/array_of_structures.o: tests/array_of_structures/array_of_structures.c.o
 
 .PHONY : tests/array_of_structures/array_of_structures.o
@@ -216,6 +243,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... mld.o"
+	@echo "... mld.i"
+	@echo "... mld.s"
 	@echo "... tests/array_of_structures/array_of_structures.o"
 	@echo "... tests/array_of_structures/array_of_structures.i"
 	@echo "... tests/array_of_structures/array_of_structures.s"

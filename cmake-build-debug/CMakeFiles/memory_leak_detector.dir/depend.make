@@ -4,6 +4,9 @@
 CMakeFiles/memory_leak_detector.dir/main.c.o: ../main.c
 CMakeFiles/memory_leak_detector.dir/main.c.o: ../mld.h
 
+CMakeFiles/memory_leak_detector.dir/mld.c.o: ../mld.c
+CMakeFiles/memory_leak_detector.dir/mld.c.o: ../mld.h
+
 CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o: ../tests/array_of_structures/array_of_structures.c
 CMakeFiles/memory_leak_detector.dir/tests/array_of_structures/array_of_structures.c.o: ../tests/array_of_structures/array_of_structures.h
 
