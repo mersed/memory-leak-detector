@@ -78,6 +78,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/css.h">
+			<Option target="memory_leak_detector"/>
+		</Unit>
 		<Unit filename="/home/mersed/CLionProjects/memory-leak-detector/main.c">
 			<Option target="memory_leak_detector"/>
 		</Unit>
