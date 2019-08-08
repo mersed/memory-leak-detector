@@ -1,10 +1,16 @@
 #ifndef MEMORY_LEAK_DETECTOR_MLD_H
 
+#include <stdint.h>
+#include <assert.h>
+
 #define MAX_STRUCTURE_NAME_SIZE 128
 #define MAX_FIELD_NAME_SIZE 128
 
+#define FIELD_SIZE(struct_name, field_name) \
+    sizeof(((struct_name *)0)->field_name)
+
 #define OFFSETOF(struct_name, field_name) \
-    (unsigned int)&(((struct_name *)0)->field_name)
+    (uintptr_t)&(((struct_name *)0)->field_name)
 
 const unsigned int FIELD_INFO_T_SIZE;
 const unsigned int STRUCT_DB_T_SIZE;
@@ -44,7 +50,7 @@ typedef struct struct_db_rec {
     char struct_name[MAX_STRUCTURE_NAME_SIZE]; // key
     unsigned int ds_size;   // Size of the structure
     unsigned int n_fields;  // No of fields in the structure
-    field_info_t fields[0]; // Info of structure fields
+    field_info_t *fields; // Info of structure fields
 } struct_db_rec_t;
 
 /**
@@ -60,5 +66,24 @@ typedef struct struct_db {
 int add_structure_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_db_rec);
 void print_structure_db(struct_db_t *struct_db);
 void print_structure_rec(struct_db_rec_t *struct_db_rec);
+
+#define FIELD_INFO(struct_name, fl_name, fl_data_type, nested_struct_name)    \
+    {#fl_name, fl_data_type, FIELD_SIZE(struct_name, fl_name), OFFSETOF(struct_name, fl_name), #nested_struct_name}
+
+#define REGISTER_STRUCTURE(struct_db_t, st_name, fields_array)                          \
+    do {                                                                                \
+        struct_db_rec_t *record = calloc(1, STRUCT_DB_T_SIZE + 5*FIELD_INFO_T_SIZE);    \
+        strncpy(record->struct_name, #st_name, MAX_STRUCTURE_NAME_SIZE);                \
+        record->ds_size = sizeof(st_name);                                              \
+        record->n_fields = sizeof(fields_array) / sizeof(field_info_t);                 \
+        record->fields = fields_array;                                                  \
+        if(add_structure_to_struct_db(struct_db_t, record)) {                           \
+            assert(0);                                                                  \
+        }                                                                               \
+    }                                                                                   \
+    while(0);
+
+
+
 
 #endif //MEMORY_LEAK_DETECTOR_MLD_H

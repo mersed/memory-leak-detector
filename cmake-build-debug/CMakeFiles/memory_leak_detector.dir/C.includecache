@@ -6,17 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/mersed/CLionProjects/memory-leak-detector/css.h
-
-/home/mersed/CLionProjects/memory-leak-detector/mld.c
+/home/mersed/CLionProjects/memory-leak-detector/main.c
 stdio.h
 -
 stdlib.h
 -
+string.h
+-
+stddef.h
+-
 mld.h
 /home/mersed/CLionProjects/memory-leak-detector/mld.h
-css.h
-/home/mersed/CLionProjects/memory-leak-detector/css.h
 
 /home/mersed/CLionProjects/memory-leak-detector/mld.h
+stdint.h
+-
+assert.h
+-
 
