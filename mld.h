@@ -74,6 +74,7 @@ void print_structure_rec(struct_db_rec_t *struct_db_rec);
     do {                                                                                \
         struct_db_rec_t *record = calloc(1, STRUCT_DB_T_SIZE + 5*FIELD_INFO_T_SIZE);    \
         strncpy(record->struct_name, #st_name, MAX_STRUCTURE_NAME_SIZE);                \
+        record->next = NULL;                                                            \
         record->ds_size = sizeof(st_name);                                              \
         record->n_fields = sizeof(fields_array) / sizeof(field_info_t);                 \
         record->fields = fields_array;                                                  \

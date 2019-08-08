@@ -13,6 +13,7 @@ char *DATA_TYPE[] = {
         "DOUBLE", "OBJ_STRUCT"
 };
 
+
 void print_structure_rec(struct_db_rec_t *struct_db_rec) {
     if(!struct_db_rec) return;
     int j = 0;
@@ -40,22 +41,25 @@ void print_structure_db(struct_db_t *struct_db) {
     printf("Number of Structures Registered = %d\n", struct_db->count);
 
     while(struct_db_rec) {
-        printf("structure Number : %d (%p)\n", i, struct_db_rec);
+        printf("structure Number : %d (%p)\n", i++, struct_db_rec);
         print_structure_rec(struct_db_rec);
         struct_db_rec = struct_db_rec->next;
     }
 }
 
 
-int add_structure_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_db_rec) {
+int add_structure_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_rec) {
     struct_db_rec_t *head = struct_db->head;
 
-    if(!head) {
-        struct_db->head = struct_db_rec;
-        struct_db_rec->next = NULL;
+    if(!head){
+        struct_db->head = struct_rec;
+        struct_rec->next = NULL;
         struct_db->count++;
         return 0;
     }
 
+    struct_rec->next = head;
+    struct_db->head = struct_rec;
+    struct_db->count++;
     return 0;
 }
