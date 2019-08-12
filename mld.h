@@ -64,6 +64,7 @@ typedef struct struct_db {
 
 
 int add_structure_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_db_rec);
+struct_db_rec_t* struct_db_look_up(struct_db_t *struct_db, char *struct_name);
 void print_structure_db(struct_db_t *struct_db);
 void print_structure_rec(struct_db_rec_t *struct_db_rec);
 
@@ -86,5 +87,34 @@ void print_structure_rec(struct_db_rec_t *struct_db_rec);
 
 
 
+
+
+
+
+
+
+
+
+/** OBJECT DATABASE STRUCTURE IMPLEMENTATION STARTS HERE */
+typedef struct object_db_rec {
+    struct object_db_rec *next;
+    void *ptr;
+    unsigned int units;
+    struct_db_rec_t *struct_rec;
+} object_db_rec_t;
+
+typedef struct object_db {
+    struct_db_t *struct_db;
+    object_db_rec_t *head;
+    unsigned int count;
+} object_db_t;
+
+
+void print_obj_rec(object_db_rec_t *obj, int i);
+void print_obj_db(object_db_t *object_db);
+void* xcalloc(object_db_t *object_db, char *struct_name, int units);
+void add_object_to_object_db(object_db_t*, void*, int, struct_db_rec_t*);
+void* object_db_look_up(object_db_t *object_db, void *ptr);
+void print_object_db(object_db_t *object_db);
 
 #endif //MEMORY_LEAK_DETECTOR_MLD_H

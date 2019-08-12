@@ -63,3 +63,81 @@ int add_structure_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_r
     struct_db->count++;
     return 0;
 }
+
+struct_db_rec_t* struct_db_look_up(struct_db_t *struct_db, char *struct_name) {
+    if(!struct_db || !(struct_db->head))
+        return NULL;
+
+    struct_db_rec_t *next = struct_db->head;
+    while(next) {
+        if(strcmp(next->struct_name, struct_name) == 0) return next;
+        next = next->next;
+    }
+
+    return NULL;
+}
+
+void* xcalloc(object_db_t *object_db, char *struct_name, int units) {
+    struct_db_rec_t *struct_rec = struct_db_look_up(object_db->struct_db, struct_name);
+    assert(struct_rec);
+
+    void *ptr = calloc(units, struct_rec->ds_size);
+    add_object_to_object_db(object_db, ptr, units, struct_rec);
+    return ptr;
+}
+
+void add_object_to_object_db(object_db_t *object_db, void *ptr, int units, struct_db_rec_t *struct_rec) {
+    object_db_rec_t *obj_rec = object_db_look_up(object_db, ptr);
+    /*Dont add same object twice*/
+    assert(!obj_rec);
+
+    object_db_rec_t *object_rec = calloc(1, sizeof(object_db_rec_t));
+    object_rec->ptr = ptr;
+    object_rec->units = units;
+    object_rec->struct_rec = struct_rec;
+    object_rec->next = NULL;
+
+    object_db_rec_t *head = object_db->head;
+    if(!head) {
+        object_db->head = object_rec;
+        object_db->count++;
+        return;
+    }
+
+    object_db->head = object_rec;
+    object_rec->next = head;
+    object_db->count++;
+}
+
+void* object_db_look_up(object_db_t *object_db, void *ptr) {
+    object_db_rec_t *object_rec = object_db->head;
+    if(!object_rec) return NULL;
+
+    while(object_rec) {
+        if(object_rec->ptr == ptr) {
+            return ptr;
+        }
+
+        object_rec = object_rec->next;
+    }
+
+    return NULL;
+}
+
+/*Dumping Functions for Object database*/
+void print_object_rec(object_db_rec_t *obj_rec, int i) {
+    if(!obj_rec) return;
+    printf(ANSI_COLOR_MAGENTA"-----------------------------------------------------------------------------------|\n");
+    printf(ANSI_COLOR_YELLOW "%-3d ptr = %-10p | next = %-10p | units = %-4d | struct_name = %-10s |\n",
+           i, obj_rec->ptr, obj_rec->next, obj_rec->units, obj_rec->struct_rec->struct_name);
+    printf(ANSI_COLOR_MAGENTA "-----------------------------------------------------------------------------------|\n");
+}
+
+void print_object_db(object_db_t *object_db) {
+    object_db_rec_t *head = object_db->head;
+    unsigned int i = 0;
+    printf(ANSI_COLOR_CYAN "Printing OBJECT DATABASE\n");
+    for(; head; head = head->next){
+        print_object_rec(head, i++);
+    }
+}
