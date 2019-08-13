@@ -110,11 +110,13 @@ typedef struct object_db {
 } object_db_t;
 
 
-void print_obj_rec(object_db_rec_t *obj, int i);
-void print_obj_db(object_db_t *object_db);
+void print_object_rec(object_db_rec_t *obj_rec, int i);
 void* xcalloc(object_db_t *object_db, char *struct_name, int units);
+void xfree(object_db_t *object_db, void *ptr);
+void remove_object_from_object_db(object_db_t *object_db, object_db_rec_t *object_db_rec);
 void add_object_to_object_db(object_db_t*, void*, int, struct_db_rec_t*);
 void* object_db_look_up(object_db_t *object_db, void *ptr);
 void print_object_db(object_db_t *object_db);
+void mld_dump_object_rec_detail (object_db_rec_t *obj_rec);
 
 #endif //MEMORY_LEAK_DETECTOR_MLD_H
