@@ -29,6 +29,11 @@ typedef enum {
     OBJ_STRUCT
 } data_type_t;
 
+typedef enum {
+    MLD_FALSE,
+    MLD_TRUE
+} mld_boolean_t;
+
 /**
  * Structure to store the information of one field of a
  * C structure
@@ -101,6 +106,9 @@ typedef struct object_db_rec {
     void *ptr;
     unsigned int units;
     struct_db_rec_t *struct_rec;
+    mld_boolean_t is_visited;   // Used for Graph traversal
+    mld_boolean_t is_root;      // Is this object root object
+    mld_boolean_t is_global;    // Is this object is referenced by global variable in application
 } object_db_rec_t;
 
 typedef struct object_db {
@@ -114,9 +122,11 @@ void print_object_rec(object_db_rec_t *obj_rec, int i);
 void* xcalloc(object_db_t *object_db, char *struct_name, int units);
 void xfree(object_db_t *object_db, void *ptr);
 void remove_object_from_object_db(object_db_t *object_db, object_db_rec_t *object_db_rec);
-void add_object_to_object_db(object_db_t*, void*, int, struct_db_rec_t*);
+void add_object_to_object_db(object_db_t*, void*, int, struct_db_rec_t*, mld_boolean_t, mld_boolean_t, mld_boolean_t);
 void* object_db_look_up(object_db_t *object_db, void *ptr);
 void print_object_db(object_db_t *object_db);
 void mld_dump_object_rec_detail (object_db_rec_t *obj_rec);
+void mld_register_root_object(object_db_t *object_db, void *objptr, char *struct_name, unsigned int units);
+void set_mld_object_as_global_root(object_db_t *object_d, void *obj_ptr);
 
 #endif //MEMORY_LEAK_DETECTOR_MLD_H

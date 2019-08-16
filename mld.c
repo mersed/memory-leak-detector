@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "mld.h"
 #include "css.h"
 
@@ -119,11 +120,18 @@ void* xcalloc(object_db_t *object_db, char *struct_name, int units) {
     assert(struct_rec);
 
     void *ptr = calloc(units, struct_rec->ds_size);
-    add_object_to_object_db(object_db, ptr, units, struct_rec);
+    add_object_to_object_db(object_db, ptr, units, struct_rec, MLD_FALSE, MLD_FALSE, MLD_FALSE);
     return ptr;
 }
 
-void add_object_to_object_db(object_db_t *object_db, void *ptr, int units, struct_db_rec_t *struct_rec) {
+void add_object_to_object_db(
+        object_db_t *object_db,
+        void *ptr, int units,
+        struct_db_rec_t *struct_rec,
+        mld_boolean_t is_visited,
+        mld_boolean_t is_root,
+        mld_boolean_t is_global
+    ) {
     object_db_rec_t *obj_rec = object_db_look_up(object_db, ptr);
     /*Dont add same object twice*/
     assert(!obj_rec);
@@ -132,6 +140,9 @@ void add_object_to_object_db(object_db_t *object_db, void *ptr, int units, struc
     object_rec->ptr = ptr;
     object_rec->units = units;
     object_rec->struct_rec = struct_rec;
+    object_rec->is_visited = is_visited;
+    object_rec->is_root = is_root;
+    object_rec->is_global = is_global;
     object_rec->next = NULL;
 
     object_db_rec_t *head = object_db->head;
@@ -164,10 +175,14 @@ void* object_db_look_up(object_db_t *object_db, void *ptr) {
 /*Dumping Functions for Object database*/
 void print_object_rec(object_db_rec_t *obj_rec, int i) {
     if(!obj_rec) return;
-    printf(ANSI_COLOR_MAGENTA"-----------------------------------------------------------------------------------|\n");
-    printf(ANSI_COLOR_YELLOW "%-3d ptr = %-10p | next = %-10p | units = %-4d | struct_name = %-10s |\n",
-           i, obj_rec->ptr, obj_rec->next, obj_rec->units, obj_rec->struct_rec->struct_name);
-    printf(ANSI_COLOR_MAGENTA "-----------------------------------------------------------------------------------|\n");
+
+    char *is_root = obj_rec->is_root ? "TRUE" : "FALSE";
+    char *is_global = obj_rec->is_global ? "TRUE" : "FALSE";
+
+    printf(ANSI_COLOR_MAGENTA"----------------------------------------------------------------------------------------------------------------------------------------------------|\n");
+    printf(ANSI_COLOR_YELLOW "%-3d ptr = %-10p | next = %-10p | units = %-4d | struct_name = %-10s | is_root = %s | is_global = %s\n",
+           i, obj_rec->ptr, obj_rec->next, obj_rec->units, obj_rec->struct_rec->struct_name, is_root, is_global );
+    printf(ANSI_COLOR_MAGENTA "---------------------------------------------------------------------------------------------------------------------------------------------------|\n");
 }
 
 void print_object_db(object_db_t *object_db) {
@@ -215,4 +230,23 @@ void mld_dump_object_rec_detail (object_db_rec_t *obj_rec) {
             }
         }
     }
+}
+
+
+
+
+void mld_register_root_object(object_db_t *object_db, void *objptr, char *struct_name, unsigned int units) {
+    struct_db_rec_t *struct_rec = struct_db_look_up(object_db->struct_db, struct_name);
+    assert(struct_rec);
+
+    add_object_to_object_db(object_db, objptr, units, struct_rec, MLD_TRUE, MLD_TRUE, MLD_TRUE);
+}
+
+void set_mld_object_as_global_root(object_db_t *object_d, void *obj_ptr) {
+    object_db_rec_t *obj_rec = object_db_look_up(object_d, obj_ptr);
+    assert(obj_rec);
+
+    obj_rec->is_visited = MLD_TRUE;
+    obj_rec->is_root = MLD_TRUE;
+    obj_rec->is_global = MLD_TRUE;
 }
