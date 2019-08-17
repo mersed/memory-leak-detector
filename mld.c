@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <memory.h>
 #include "mld.h"
 #include "css.h"
 
@@ -65,6 +66,7 @@ int add_structure_to_struct_db(struct_db_t *struct_db, struct_db_rec_t *struct_r
     return 0;
 }
 
+
 struct_db_rec_t* struct_db_look_up(struct_db_t *struct_db, char *struct_name) {
     if(!struct_db || !(struct_db->head))
         return NULL;
@@ -78,6 +80,7 @@ struct_db_rec_t* struct_db_look_up(struct_db_t *struct_db, char *struct_name) {
     return NULL;
 }
 
+
 void xfree(object_db_t *object_db, void *ptr) {
     if(!ptr) return;
 
@@ -89,6 +92,7 @@ void xfree(object_db_t *object_db, void *ptr) {
 
     remove_object_from_object_db(object_db, obj_rec);
 }
+
 
 void remove_object_from_object_db(object_db_t *object_db, object_db_rec_t *obj_rec) {
     if(object_db->count == 1) {
@@ -115,22 +119,23 @@ void remove_object_from_object_db(object_db_t *object_db, object_db_rec_t *obj_r
     }
 }
 
+
 void* xcalloc(object_db_t *object_db, char *struct_name, int units) {
     struct_db_rec_t *struct_rec = struct_db_look_up(object_db->struct_db, struct_name);
     assert(struct_rec);
 
     void *ptr = calloc(units, struct_rec->ds_size);
-    add_object_to_object_db(object_db, ptr, units, struct_rec, MLD_FALSE, MLD_FALSE, MLD_FALSE);
+    add_object_to_object_db(object_db, ptr, units, struct_rec, MLD_FALSE);
     return ptr;
 }
 
+
 void add_object_to_object_db(
         object_db_t *object_db,
-        void *ptr, int units,
+        void *ptr,
+        int units,
         struct_db_rec_t *struct_rec,
-        mld_boolean_t is_visited,
-        mld_boolean_t is_root,
-        mld_boolean_t is_global
+        mld_boolean_t is_root
     ) {
     object_db_rec_t *obj_rec = object_db_look_up(object_db, ptr);
     /*Dont add same object twice*/
@@ -140,9 +145,8 @@ void add_object_to_object_db(
     object_rec->ptr = ptr;
     object_rec->units = units;
     object_rec->struct_rec = struct_rec;
-    object_rec->is_visited = is_visited;
+    object_rec->is_visited = MLD_FALSE;
     object_rec->is_root = is_root;
-    object_rec->is_global = is_global;
     object_rec->next = NULL;
 
     object_db_rec_t *head = object_db->head;
@@ -156,6 +160,7 @@ void add_object_to_object_db(
     object_rec->next = head;
     object_db->count++;
 }
+
 
 void* object_db_look_up(object_db_t *object_db, void *ptr) {
     object_db_rec_t *object_rec = object_db->head;
@@ -172,18 +177,19 @@ void* object_db_look_up(object_db_t *object_db, void *ptr) {
     return NULL;
 }
 
+
 /*Dumping Functions for Object database*/
 void print_object_rec(object_db_rec_t *obj_rec, int i) {
     if(!obj_rec) return;
 
     char *is_root = obj_rec->is_root ? "TRUE" : "FALSE";
-    char *is_global = obj_rec->is_global ? "TRUE" : "FALSE";
 
     printf(ANSI_COLOR_MAGENTA"----------------------------------------------------------------------------------------------------------------------------------------------------|\n");
-    printf(ANSI_COLOR_YELLOW "%-3d ptr = %-10p | next = %-10p | units = %-4d | struct_name = %-10s | is_root = %s | is_global = %s\n",
-           i, obj_rec->ptr, obj_rec->next, obj_rec->units, obj_rec->struct_rec->struct_name, is_root, is_global );
+    printf(ANSI_COLOR_YELLOW "%-3d ptr = %-10p | next = %-10p | units = %-4d | struct_name = %-10s | is_root = %s\n",
+           i, obj_rec->ptr, obj_rec->next, obj_rec->units, obj_rec->struct_rec->struct_name, is_root);
     printf(ANSI_COLOR_MAGENTA "---------------------------------------------------------------------------------------------------------------------------------------------------|\n");
 }
+
 
 void print_object_db(object_db_t *object_db) {
     object_db_rec_t *head = object_db->head;
@@ -194,7 +200,8 @@ void print_object_db(object_db_t *object_db) {
     }
 }
 
-void mld_dump_object_rec_detail (object_db_rec_t *obj_rec) {
+
+void mld_dump_object_rec_detail(object_db_rec_t *obj_rec) {
     struct_db_rec_t *struct_rec = obj_rec->struct_rec;
 
     for(int i=0; i<obj_rec->units; i++) {
@@ -239,14 +246,143 @@ void mld_register_root_object(object_db_t *object_db, void *objptr, char *struct
     struct_db_rec_t *struct_rec = struct_db_look_up(object_db->struct_db, struct_name);
     assert(struct_rec);
 
-    add_object_to_object_db(object_db, objptr, units, struct_rec, MLD_TRUE, MLD_TRUE, MLD_TRUE);
+    add_object_to_object_db(object_db, objptr, units, struct_rec, MLD_TRUE);
 }
 
-void set_mld_object_as_global_root(object_db_t *object_d, void *obj_ptr) {
-    object_db_rec_t *obj_rec = object_db_look_up(object_d, obj_ptr);
+/**
+ * The global object of the application which is not created by xcalloc
+ * should be registered with MLD using bellow API
+ */
+void mld_set_dynamic_object_as_root(object_db_t *object_db, void *obj_ptr) {
+    object_db_rec_t *obj_rec = object_db_look_up(object_db, obj_ptr);
     assert(obj_rec);
 
     obj_rec->is_visited = MLD_TRUE;
     obj_rec->is_root = MLD_TRUE;
-    obj_rec->is_global = MLD_TRUE;
+}
+
+void run_mld_algorithm(object_db_t *object_db) {
+    // Step 1: Mark all objects in objects database as unvisited */
+    init_mld_algorithm(object_db);
+
+    /*
+     * Step 2: Get the first root object from the object db, it could be
+     * present anywhere in objectdb. If there are multiple roots in object db
+     * return the first one, we can start mld algorithm from any root ojects
+     */
+    object_db_rec_t *root_obj = get_next_root_object(object_db, NULL);
+    while(root_obj) {
+        if(root_obj->is_visited) {
+            /**
+             * It means, all objects reachable from this root_obj has already been
+             * explored, no need to do it again, else you will end up in infinite loop.
+             * Remember, Application Data Structures are cyclic graphs.
+             */
+             root_obj = get_next_root_object(object_db, root_obj);
+            continue;
+        }
+
+        // root objects are always reachable since application holds the global
+        // variable to it
+        root_obj->is_visited = MLD_TRUE;
+
+        // Explore all reachable objects from this root_obj recursively
+        mld_explore_objects_recursively(object_db, root_obj);
+
+        root_obj = get_next_root_object(object_db, root_obj);
+    }
+}
+
+static void init_mld_algorithm(object_db_t *object_db) {
+    object_db_rec_t *obj_rec = object_db->head;
+
+    while(obj_rec) {
+        obj_rec->is_visited = MLD_FALSE;
+        obj_rec = obj_rec->next;
+    }
+}
+
+
+static object_db_rec_t* get_next_root_object(object_db_t *object_db, object_db_rec_t* root_obj) {
+    object_db_rec_t *first = root_obj ? root_obj->next : object_db->head;
+    while(first) {
+        if(first->is_root) {
+            return first;
+        }
+        first = first->next;
+    }
+
+    return NULL;
+}
+
+static void mld_explore_objects_recursively(object_db_t* object_db, object_db_rec_t *parent_obj) {
+    unsigned int i, n_fields;
+    char *parent_obj_ptr = NULL;
+    char *child_obj_offset = NULL;
+    void *child_obj_address = NULL;
+
+    field_info_t *field_info = NULL;
+    object_db_rec_t *child_object_rec = NULL;
+    struct_db_rec_t *parent_struct_rec = parent_obj->struct_rec;
+
+    // Parent object must have already visited
+    assert(parent_obj->is_visited);
+
+
+    for(i = 0; i<parent_obj->units; i++) {
+        parent_obj_ptr = (char *)(parent_obj->ptr) + (i * parent_struct_rec->ds_size);
+
+        for(n_fields=0; n_fields<parent_struct_rec->n_fields; n_fields++) {
+            field_info = &parent_struct_rec->fields[n_fields];
+
+            switch(field_info->dtype) {
+                case UINT8:
+                case UINT32:
+                case INT32:
+                case CHAR:
+                case FLOAT:
+                case DOUBLE:
+                case OBJ_STRUCT:
+                    break;
+                case OBJ_PTR:
+                default:
+                    ;
+
+                // child_obj_offset is the memory location inside parent object
+                // here address of next level object is stored
+                child_obj_offset = parent_obj_ptr + field_info->offset;
+                memcpy(&child_obj_address, child_obj_offset, sizeof(void *));
+
+                // child_object_address now stores the address of the nxt object in the
+                // graph. It could be NULL, handle that as well
+                if(!child_obj_address) continue;
+
+                child_object_rec = object_db_look_up(object_db, child_obj_address);
+                assert(child_object_rec);
+
+                // Since we are able to reach this child object "child_object_rec
+                // from parent object "parent_obj_ptr", mark this
+                // child object as already visited, then do nothing - avoid infinite loops
+                if(!child_object_rec->is_visited) {
+                    child_object_rec->is_visited = MLD_TRUE;
+                    mld_explore_objects_recursively(object_db, child_object_rec);
+                }
+            }
+        }
+    }
+}
+
+void report_leaked_objects(object_db_t *object_db) {
+    int i = 0;
+    object_db_rec_t *head;
+
+    printf("Dumping Leaked Objects\n");
+
+    for(head = object_db->head; head; head = head->next) {
+        if(!head->is_visited) {
+            print_object_rec(head, i++);
+            mld_dump_object_rec_detail(head);
+            printf("\n\n");
+        }
+    }
 }
